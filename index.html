@@ -790,6 +790,13 @@ function topLogo(){
 /* ---- init ---- */
 function boot(){
   for(const w of [300,400,600,700,800]){ FONTS[w]=opentype.parse(b64buf(FONT_B64[w])); }
+  // Aplicar Outfit a la INTERFAZ con las mismas fuentes embebidas de los posts
+  // (así el chrome de la app usa la misma tipografía; sin dependencias externas).
+  const faces=[300,400,600,700,800].map(w=>
+    `@font-face{font-family:'Outfit';font-style:normal;font-weight:${w};font-display:swap;`
+    +`src:url(data:font/ttf;base64,${FONT_B64[w]}) format('truetype')}`
+  ).join('');
+  const st=document.createElement('style'); st.textContent=faces; document.head.appendChild(st);
   topLogo();
   if(!load()){
     // seed carrusel de ejemplo (los 5 tipos)
